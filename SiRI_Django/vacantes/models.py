@@ -25,7 +25,7 @@ class Vacancy(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name + ' - ' + self.idCompany.name
+        return self.name + ' - ' + self.idCompany.nit
 
 class Requirements(models.Model):
     idVacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, null=False)
