@@ -12,7 +12,7 @@ class Contracts(models.Model):
     name = models.CharField(max_length=200, null=False)
 
     def __str__(self):
-        return self.id
+        return self.name
 
 class Vacancy(models.Model):
     idCompany = models.ForeignKey(Companies, on_delete=models.CASCADE, null=False)
@@ -24,7 +24,13 @@ class Vacancy(models.Model):
     experience = models.CharField(max_length=100, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name + ' - ' + self.idCompany.name
+
 class Requirements(models.Model):
     idVacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, null=False)
     name = models.CharField(max_length=200, null=False)
     description = models.CharField(max_length=500, null=False)
+
+    def __str__(self):
+        return self.name + ' - ' + self.idVacancy.name
