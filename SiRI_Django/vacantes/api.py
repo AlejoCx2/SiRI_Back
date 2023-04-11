@@ -4,7 +4,7 @@ from rest_framework import viewsets, permissions
 
 class CompaniesViewSet(viewsets.ModelViewSet):
     queryset = Companies.objects.all()
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = CompaniesSerializers
 
 class ContractsViewSet(viewsets.ModelViewSet):
