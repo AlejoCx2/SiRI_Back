@@ -14,10 +14,18 @@ class ContractsSerializers(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 class VacancySerializers(serializers.ModelSerializer):
+    contract = serializers.SerializerMethodField()
+    company = serializers.SerializerMethodField()
     class Meta:
         model = Vacancy
-        fields = '__all__' #('atrubute','')
+        fields = ('id','company','name','description','additionalInfo','keyWords','salary','experience','contract','created_at') #('atrubute','')
         read_only_fields = ('created_at','id',)
+
+    def get_contract(self,obj):
+        return obj.idContract.name
+    
+    def get_company(self,obj):
+        return obj.idCompany.nit
 
 class RequirementsSerializers(serializers.ModelSerializer):
     class Meta:
