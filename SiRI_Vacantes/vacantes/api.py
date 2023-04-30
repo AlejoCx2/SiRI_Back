@@ -15,7 +15,7 @@ class ContractsViewSet(viewsets.ModelViewSet):
 
 class VacancyViewSet(viewsets.ModelViewSet):
     queryset = Vacancy.objects.all()
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [handleAuthToken]
     serializer_class = VacancySerializers
 
 class RequirementsViewSet(viewsets.ModelViewSet):
