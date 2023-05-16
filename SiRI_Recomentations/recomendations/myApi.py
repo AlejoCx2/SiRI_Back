@@ -8,6 +8,7 @@ from .serializers import StudentsSerializers
 import os
 import nltk
 import ssl
+import csv
 
 
 @api_view(['POST'])
@@ -34,9 +35,21 @@ def generarRanking(req):
 
     from nltk.corpus import stopwords
     stop_words = set(stopwords.words('english'))
-    
+
+    print('---- Vectorizando Vacante ----')
     vacancy_V = [word.lower() for word in nltk.word_tokenize(vacancy) if word.isalpha()]
     vacancy_V = [word for word in vacancy_V if word not in stop_words]
-    res['status'] = 1
+    
+    with open('features.csv', 'r') as fr:
+        reader = csv.reader(fr)
+        for i, fila in enumerate(reader, start=1):
+            if i == 1:
+                words = set(fila)  # Guarda los valores de la fila en un conjunto
+                break
+
+    vacancy_S = [1 if word in vacancy_V else 0 for word in words]
+
+    res['status']=1
+    res['result']=sum(vacancy_S)
 
     return Response(res)

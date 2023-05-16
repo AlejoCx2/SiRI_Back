@@ -16,5 +16,8 @@ PyJWT==2.6.0
 python-dotenv==1.0.0
 pytz==2023.3
 regex==2023.5.5
+scikit-learn==1.2.2
+scipy==1.10.1
 sqlparse==0.4.3
+threadpoolctl==3.1.0
 tqdm==4.65.0
