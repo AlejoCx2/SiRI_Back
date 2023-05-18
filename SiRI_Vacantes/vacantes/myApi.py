@@ -22,8 +22,17 @@ def createVacante(req):
         res['msg'] = "Vacante creada exitosamente"
     res['status'] = 1
     # Crea la vacante
-    v = Vacancy.objects.create(name=req.data['name'], description=req.data['description'], additionalInfo=req.data['additionalInfo'],
-                               keyWords=req.data['keyWords'], salary=req.data['salary'], experience=req.data['experience'], idCompany=company[0], idContract=contrct)
+    v = Vacancy.objects.create(name=req.data['name'], 
+                               description=req.data['description'], 
+                               additionalInfo=req.data['additionalInfo'], 
+                               salary=req.data['salary'],
+                               modality=req.data['modality'],
+                               place=req.data['place'],
+                               idContract=contrct, 
+                               experience=req.data['experience'],
+                               skills=req.data['skills'],
+                               idCompany=company[0], 
+                               )
     res['result']['vacante'] = VacancySerializers(v).data
 
     return Response(res)
