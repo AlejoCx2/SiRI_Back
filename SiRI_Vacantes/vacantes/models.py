@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class Companies(models.Model):
@@ -18,11 +19,13 @@ class Vacancy(models.Model):
     idCompany = models.ForeignKey(Companies, on_delete=models.CASCADE, null=False)
     name = models.CharField(max_length=200, null=False)
     description = models.TextField(null=False) # max=1500 testiar
-    additionalInfo = models.TextField() # max=1500 testiar
-    keyWords = models.CharField(max_length=500, null=False)
+    additionalInfo = models.TextField(null=True, blank=True) # max=1500 testiar
     salary = models.IntegerField(validators=[MinValueValidator(1200000)])
+    modality = models.CharField(max_length=100, null=False)
+    skills = ArrayField(models.CharField(max_length=100),blank=False, null=False)
     idContract = models.ForeignKey(Contracts, on_delete=models.RESTRICT, null=False)
     experience = models.CharField(max_length=100, null=False)
+    place = models.CharField(max_length=200, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

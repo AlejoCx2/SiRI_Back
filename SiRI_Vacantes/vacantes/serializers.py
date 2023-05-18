@@ -18,7 +18,7 @@ class VacancySerializers(serializers.ModelSerializer):
     company = serializers.SerializerMethodField()
     class Meta:
         model = Vacancy
-        fields = ('id','company','name','description','additionalInfo','keyWords','salary','experience','contract','created_at') #('atrubute','')
+        fields = ('id','company','name','description','additionalInfo','salary','modality','place','contract','experience','skills','created_at') #('atrubute','')
         read_only_fields = ('created_at','id',)
 
     def get_contract(self,obj):
