@@ -6,3 +6,13 @@ class Students(models.Model):
 
     def __str__(self):
         return self.code
+    
+class Candidates(models.Model):
+    idStudent = models.ForeignKey(Students, on_delete=models.CASCADE, null=False)
+    idVacancy = models.IntegerField(null=False)
+    score = models.DecimalField(null=False, decimal_places=2, max_digits=5)
+    applyed_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.idStudent.code + " - " + self.idVacancy
