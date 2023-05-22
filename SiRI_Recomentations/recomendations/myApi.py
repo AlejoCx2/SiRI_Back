@@ -17,6 +17,7 @@ def generarRanking(req):
 
     res = {'status': 0, 'result': {}, 'msg': ""}
     vacancy = req.data['vacancy']
+    justString = vacancy['description'] + " " + vacancy['additionalInfo']
 
     try:
         _create_unverified_https_context = ssl._create_unverified_context
@@ -34,10 +35,12 @@ def generarRanking(req):
     print('---- Let`s Go ----')
 
     from nltk.corpus import stopwords
-    stop_words = set(stopwords.words('english'))
+    stop_words_es = set(stopwords.words('spanish'))
+    stop_words_en = set(stopwords.words('english'))
+    stop_words = stop_words_es.union(stop_words_en)
 
     print('---- Vectorizando Vacante ----')
-    vacancy_V = [word.lower() for word in nltk.word_tokenize(vacancy) if word.isalpha()]
+    vacancy_V = [word.lower() for word in nltk.word_tokenize(justString) if word.isalpha()]
     vacancy_V = [word for word in vacancy_V if word not in stop_words]
     
     with open('features.csv', 'r') as fr:

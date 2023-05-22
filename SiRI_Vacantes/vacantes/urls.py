@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from .api import CompaniesViewSet, ContractsViewSet, VacancyViewSet, RequirementsViewSet
-from .myApi import createVacante
+from .myApi import createVacante, MyModelUpdateView
 
 router = routers.DefaultRouter()
 
@@ -18,3 +18,4 @@ urlpatterns = router.urls
 urlpatterns.append(path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'))
 urlpatterns.append(path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'))
 urlpatterns.append(path('api/create/vacancy/', createVacante, name='create_vacante'))
+urlpatterns.append(path('api/update/vacancy/<int:pk>/', MyModelUpdateView.as_view(), name='update_vacante'))
