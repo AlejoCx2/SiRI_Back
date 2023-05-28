@@ -128,31 +128,47 @@ def makeVector(profile,experiences,certifications,skills):
 
     return [1 if word in student_V else 0 for word in words]
 
-""" def updateStudent(subKey,profile,experiences,certifications,skills):
-    arr = []
-    with open('students.csv', 'r') as fr:
-        reader = csv.DictReader(fr)
-        for row in reader:
-            if row['subKey'] == subKey:
-                print('---- Estudiante Encontrado ----')
-                row['vector'] = makeVector(profile,experiences,certifications,skills)
-                arr.append(row)
-            else:
-                arr.append(row)
-    
-    with open('students.csv', 'w') as fw:
-        # Crea un escritor CSV
-        writer = csv.writer(fw)
-        # Escribe las filas actualizadas en el archivo CSV
-        writer.writerows(arr) """
+def updateStudent(subKey,profile,experiences,certifications,skills):
+    students = getStudents()
+    try:
+        old_student_S = students[subKey]
+        print('---- Estudiante Encontrado ----')
+        student_S = makeVector(profile,experiences,certifications,skills)
+        students[subKey] = student_S
+        print(old_student_S==student_S)
+
+        #with open('student.pkl', 'wb') as file:
+        #    pickle.dump(students, file)
+        return "Piola"
+    except KeyError:
+        return "XD'NT"
 
 def compareSkills(vSkl, sSkl):
     total = len(vSkl)
     cumplidas = 0
-    for s in vSkl:
-        print(s)
-        if s in sSkl:
-            print("si esta: ",s)
+    for s in sSkl:
+        if s['name'] in vSkl:
+            print(s['name'])
             cumplidas += 1
     
     return cumplidas / total
+
+def verifyExperience(reqExp,stdExpList):
+    reqArr = reqExp.split(" ") #['cantidad' 'unidad']
+
+    if reqArr[1] == "años" or reqArr[1] == "año":
+        req = int(reqArr[0])*12
+    else:
+        req = int(reqArr[0])
+
+    std = 0
+    for stdExp in stdExpList:
+        stdArr = stdExp['experience_time'].split(" ")
+        if stdArr[1] == "years" or stdArr[1] == "year":
+            std += int(stdArr[0])*12
+        else:
+            std += int(stdArr[0])
+    #print(std)
+    #print(req)
+    return std >= req
+    
