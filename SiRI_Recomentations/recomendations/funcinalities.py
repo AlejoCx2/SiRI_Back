@@ -62,6 +62,8 @@ def studentToVector(subKey,profile,experiences,certifications,skills):
         students[subKey] = student_S
         #print(student_S)
 
+
+
         with open('student.pkl', 'wb') as file:
             pickle.dump(students, file)
 
@@ -137,21 +139,34 @@ def updateStudent(subKey,profile,experiences,certifications,skills):
         students[subKey] = student_S
         print(old_student_S==student_S)
 
-        #with open('student.pkl', 'wb') as file:
-        #    pickle.dump(students, file)
-        return "Piola"
+        with open('student.pkl', 'wb') as file:
+            pickle.dump(students, file)
+
+        return {'msg':"Actualizado",'vector':student_S}
     except KeyError:
-        return "XD'NT"
+        # No ha aplicado a alguna vacante aun
+        return {'msg':"No Existe"}
 
 def compareSkills(vSkl, sSkl):
     total = len(vSkl)
     cumplidas = 0
-    for s in sSkl:
-        if s['name'] in vSkl:
-            print(s['name'])
+    vSkl = loweCase(vSkl)
+    sSkl = loweCase(sSkl)
+    for s in vSkl:
+        if s in sSkl:
+            print(s)
             cumplidas += 1
     
     return cumplidas / total
+
+def loweCase(slist):
+    lowerArr = []
+    for s in slist:
+        try:
+            lowerArr.append(s.lower())
+        except AttributeError:
+            lowerArr.append(s['name'].lower())
+    return lowerArr
 
 def verifyExperience(reqExp,stdExpList):
     reqArr = reqExp.split(" ") #['cantidad' 'unidad']
@@ -170,5 +185,5 @@ def verifyExperience(reqExp,stdExpList):
             std += int(stdArr[0])
     #print(std)
     #print(req)
-    return std >= req
+    return {'std':std,'req':req}
     
