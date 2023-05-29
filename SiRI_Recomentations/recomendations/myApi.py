@@ -13,13 +13,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 def generarRanking(req):
 
     res = {'status': 0, 'result': {}, 'msg': ""}
-    vacancy = req.data['vacancy']
-    justString = vacancy['description'] + " " + vacancy['additionalInfo']
-
-    
-
+    candidates = Candidates.objects.filter(idVacancy=req.data['id'])
+    ranking = []
+    for c in candidates:
+        ranking.append(CandidatesSerializers(c).data)
+    ranking = sorted(ranking, key=lambda i: i['score'], reverse=True)
+    #print(ranking)
     res['status']=1
-    res['result']=sum(vacancy)
+    res['result'] = ranking
 
     return Response(res)
 

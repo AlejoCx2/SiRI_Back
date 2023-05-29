@@ -21,4 +21,4 @@ class Candidates(models.Model):
         unique_together = (('idStudent', 'idVacancy'),)
 
     def __str__(self):
-        return self.idStudent.code + " - " + self.idVacancy
+        return str(self.idStudent.code) + " - " + str(self.idVacancy)
