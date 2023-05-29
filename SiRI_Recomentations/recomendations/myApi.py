@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .permissions import handleAuthToken
 from .serializers import StudentsSerializers, CandidatesSerializers
-from .funcinalities import vacancyToVector, studentToVector, compareSkills, verifyExperience, updateStudent, getVacantes,loweCase
+from .funcinalities import vacancyToVector, studentToVector, compareSkills, verifyExperience, updateStudent, getVacantes,loweCase,getStudents
 from sklearn.metrics.pairwise import cosine_similarity
 
 
@@ -35,7 +35,7 @@ def apply(req):
     for s in vacancy['skills']:
         justString += " " + s
 
-    vacancy_S = vacancyToVector(vacancy['id'],vacancy['updated_at'],justString)
+    vacancy_S = vacancyToVector(vacancy['id'],False,justString)
     #print(sum(vacancy_S))
 
     student_S = studentToVector(req.data['code'],student_Info['profile'],student_Info['experiences'],student_Info['certifications'],student_Info['skills'])
@@ -99,7 +99,7 @@ def updateStudentVector(req):
         try:
             std = 0
             for v in vacancies:
-                vacancy_S = getVacantes()[v['id']]['vector']
+                vacancy_S = getVacantes()[v['id']]
                 print('---- Calculando Similitud ----')
                 similitud =  cosine_similarity([vacancy_S],[student_S])[0][0]
                 #print(similitud)
@@ -132,3 +132,47 @@ def updateStudentVector(req):
         res['msg'] = updt['msg']
 
     return Response(res)
+
+@api_view(['PUT'])
+@permission_classes([handleAuthToken])
+def updateVacancyVector(req):
+
+    res = {'status': 0, 'result': {}, 'msg': ""}
+    justString = req.data['description'] + " " + req.data['additionalInfo'] + " " + req.data["name"]
+    for s in req.data['skills']:
+        justString += " " + s
+        print(s)
+
+    vacancy_S = vacancyToVector(req.data['id'],True,justString)
+    res['status']=1
+    res['msg']="Vacante Actualizada"
+    try:
+        candidates = Candidates.objects.filter(idVacancy=req.data['id'])
+        count = 0
+        for c in candidates:
+            s = Students.objects.get(code=c.idStudent)
+            student_S = getStudents()[str(c.idStudent)]
+            print('---- Calculando Similitud ----')
+            similitud =  cosine_similarity([vacancy_S],[student_S])[0][0]
+            #print(similitud)
+            print('---- Comprobar habilidades ----')
+            skills = compareSkills(req.data['skills'],s.skills)
+            #print(skills)
+            print('---- Comprobar Experiencia ----')
+            verExp = verifyExperience(req.data['experience'],s.experience)
+            if verExp['std'] >= verExp['req']:
+                exp = 1
+            else:
+                exp = verExp['std']/verExp['req']
+            #print(exp)
+            score = (0.2*similitud + 0.2*exp + 0.6*skills)*100
+            #print(score)
+            c = Candidates.objects.get(idStudent=s.id,idVacancy=req.data['id'])
+            c.score=score
+            c.save()
+            count += 1
+        res['result']['candidates']= count
+        return Response(res)
+    except Candidates.DoesNotExist:
+        res['result']['candidates']= 0
+        return Response(res)

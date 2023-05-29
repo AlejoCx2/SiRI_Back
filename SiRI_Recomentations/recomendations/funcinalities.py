@@ -25,24 +25,25 @@ def downloadResources():
 
     return stop_words_es.union(stop_words_en)
 
-def vacancyToVector(id,update,justString):
+def vacancyToVector(id,toUpdate,justString):
     stop_words = downloadResources()
     vacantes = getVacantes()
 
     try:
-        vacancy = vacantes[id]
-        if vacancy['update'] == update:
-            vacancy_S = vacancy['vector']
-            print('---- Vacante Existente ----')
-        else:
-            print('---- Actualizando Vacante ----')
+        if toUpdate:
             vacancy_S = makeVacancy_S(justString,stop_words)
-            vacantes[id] = {'update':update, 'vector':vacancy_S}
+            vacantes[id] = vacancy_S
+
             with open('vacantes.pkl', 'wb') as file:
                 pickle.dump(vacantes, file)
+            print('---- Vacante Actualizada ----')
+        else:
+            vacancy_S = vacantes[id]
+            print('---- Vacante Existente ----')
+
     except KeyError:
         vacancy_S = makeVacancy_S(justString,stop_words)
-        vacantes[id] = {'update':update, 'vector':vacancy_S}
+        vacantes[id] = vacancy_S
 
         with open('vacantes.pkl', 'wb') as file:
                 pickle.dump(vacantes, file)
@@ -177,12 +178,15 @@ def verifyExperience(reqExp,stdExpList):
         req = int(reqArr[0])
 
     std = 0
-    for stdExp in stdExpList:
-        stdArr = stdExp['experience_time'].split(" ")
-        if stdArr[1] == "years" or stdArr[1] == "year":
-            std += int(stdArr[0])*12
-        else:
-            std += int(stdArr[0])
+    if isinstance(stdExpList,list):
+        for stdExp in stdExpList:
+            stdArr = stdExp['experience_time'].split(" ")
+            if stdArr[1] == "years" or stdArr[1] == "year":
+                std += int(stdArr[0])*12
+            else:
+                std += int(stdArr[0])
+    else:
+        std = int(stdExpList.split(" ")[0])
     #print(std)
     #print(req)
     return {'std':std,'req':req}
