@@ -16,13 +16,23 @@ def generarRanking(req):
     candidates = Candidates.objects.filter(idVacancy=req.data['id'])
     ranking = []
     for c in candidates:
-        ranking.append(CandidatesSerializers(c).data)
-    ranking = sorted(ranking, key=lambda i: i['score'], reverse=True)
+        s = Students.objects.get(code=c.idStudent)
+        obj = {}
+        obj['Similitud'] = str(c.score)+"%"
+        obj['Nombre'] = s.name
+        obj['Correo'] = s.mail
+        obj['Telefono'] = s.phone
+        ranking.append(obj)
+    ranking = sorted(ranking, key=lambda i: i['Similitud'], reverse=True)
+    count = 1
+    for obj in ranking:
+        obj['Posicion']= str(count)
+        count += 1
     #print(ranking)
     res['status']=1
     res['result'] = ranking
 
-    return Response(res)
+    return Response(ranking)
 
 @api_view(['POST'])
 @permission_classes([handleAuthToken])
