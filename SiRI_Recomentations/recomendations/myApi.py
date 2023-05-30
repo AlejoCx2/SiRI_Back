@@ -53,7 +53,7 @@ def apply(req):
     else:
         exp = verExp['std']/verExp['req']
 
-    score = (0.2*similitud + 0.2*exp + 0.6*skills)*100
+    score = (0.3*similitud + 0.2*exp + 0.5*skills)*100
 
     res['result']['similitud'] = similitud
     res['result']['skills'] = skills
