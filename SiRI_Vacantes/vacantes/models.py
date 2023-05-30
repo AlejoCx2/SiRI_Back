@@ -5,6 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 class Companies(models.Model):
     nit = models.CharField(max_length=100, null=False, unique=True)
+    name = models.CharField(max_length=300, null=False)
 
     def __str__(self):
         return self.nit

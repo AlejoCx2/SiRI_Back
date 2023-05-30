@@ -119,7 +119,7 @@ def updateStudentVector(req):
                     exp = verExp['std']/verExp['req']
                     std = verExp['std']
                 #print(exp)
-                score = (0.2*similitud + 0.2*exp + 0.6*skills)*100
+                score = (0.3*similitud + 0.2*exp + 0.5*skills)*100
                 #print(score)
                 student = Students.objects.get(code=req.data['code'])
                 student.skills = loweCase(req.data['skills'])
@@ -172,7 +172,7 @@ def updateVacancyVector(req):
             else:
                 exp = verExp['std']/verExp['req']
             #print(exp)
-            score = (0.2*similitud + 0.2*exp + 0.6*skills)*100
+            score = (0.3*similitud + 0.2*exp + 0.5*skills)*100
             #print(score)
             c = Candidates.objects.get(idStudent=s.id,idVacancy=req.data['id'])
             c.score=score

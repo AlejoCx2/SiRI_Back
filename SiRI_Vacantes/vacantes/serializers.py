@@ -25,7 +25,7 @@ class VacancySerializers(serializers.ModelSerializer):
         return obj.idContract.name
     
     def get_company(self,obj):
-        return obj.idCompany.nit
+        return obj.idCompany.name
 
 class RequirementsSerializers(serializers.ModelSerializer):
     class Meta:

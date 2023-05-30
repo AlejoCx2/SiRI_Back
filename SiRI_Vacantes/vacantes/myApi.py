@@ -13,7 +13,7 @@ def createVacante(req):
 
     res = {'status': 0, 'result': {}, 'msg': ""}
     try:
-        company = Companies.objects.get_or_create(nit=req.data['nit'])
+        company = Companies.objects.get_or_create(nit=req.data['nit'],defaults={'name': req.data['companyName']})
         contrct = Contracts.objects.get(id=req.data['idContract'])
 
         if company[1]:

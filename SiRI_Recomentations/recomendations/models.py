@@ -11,7 +11,7 @@ class Students(models.Model):
     phone = models.CharField(max_length=100,null=False)
 
     def __str__(self):
-        return self.code + " - " + self.name
+        return self.code
     
 class Candidates(models.Model):
     idStudent = models.ForeignKey(Students, on_delete=models.CASCADE, null=False)
