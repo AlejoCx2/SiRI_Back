@@ -88,7 +88,7 @@ def getVacanciesCompany(req, nit):
         for v in vacas:
             vacantes.append(VacancySerializers(v).data)
         res['result']=vacantes
-        return Response(res)
+        return Response(vacantes)
     except Companies.DoesNotExist:
         res['result']=[]
-        return Response(res)
+        return Response([])

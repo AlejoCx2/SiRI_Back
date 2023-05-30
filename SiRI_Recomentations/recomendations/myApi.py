@@ -78,7 +78,10 @@ def apply(req):
 
         sSkl = loweCase(student_Info['skills'])
         saveExp = str(verExp['std'])+" meses"
-        student = Students.objects.create(code=req.data['code'],skills=sSkl,experience=saveExp)
+        name = student_Info['profile']['name']
+        mail = student_Info['profile']['mail']
+        phone = student_Info['profile']['phone']
+        student = Students.objects.create(code=req.data['code'],skills=sSkl,experience=saveExp,name=name,mail=mail,phone=phone)
 
         c = Candidates.objects.create(idStudent=student,
                                       idVacancy=vacancy['id'],
@@ -121,6 +124,9 @@ def updateStudentVector(req):
                 student = Students.objects.get(code=req.data['code'])
                 student.skills = loweCase(req.data['skills'])
                 student.experience = str(std)+" meses"
+                student.name = req.data['profile']['name']
+                student.mail = req.data['profile']['mail']
+                student.phone = req.data['profile']['phone']
                 student.save()
                 c = Candidates.objects.get(idStudent=student.id,idVacancy=v['id'])
                 c.score=score

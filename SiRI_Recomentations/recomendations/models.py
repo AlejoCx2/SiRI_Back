@@ -6,9 +6,12 @@ class Students(models.Model):
     code = models.CharField(max_length=300,null=False,unique=True)
     skills = ArrayField(models.CharField(max_length=100),blank=False, null=False)
     experience = models.CharField(max_length=100,null=False)
+    name = models.CharField(max_length=100,null=False)
+    mail = models.CharField(max_length=100,null=False)
+    phone = models.CharField(max_length=100,null=False)
 
     def __str__(self):
-        return self.code
+        return self.code + " - " + self.name
     
 class Candidates(models.Model):
     idStudent = models.ForeignKey(Students, on_delete=models.CASCADE, null=False)
