@@ -76,3 +76,19 @@ class MyModelUpdateView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND) #Response({'msg': "ERROR: Contract Not Found"})#
         except Vacancy.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        
+@api_view(['GET'])
+@permission_classes([handleAuthToken])
+def getVacanciesCompany(req, nit):
+    res = {'status': 0, 'result': {}, 'msg': ""}
+    vacantes = []
+    try:
+        c = Companies.objects.get(nit=nit)
+        vacas = Vacancy.objects.filter(idCompany=c.id)
+        for v in vacas:
+            vacantes.append(VacancySerializers(v).data)
+        res['result']=vacantes
+        return Response(res)
+    except Companies.DoesNotExist:
+        res['result']=[]
+        return Response(res)
