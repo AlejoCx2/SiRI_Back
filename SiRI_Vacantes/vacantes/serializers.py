@@ -16,9 +16,10 @@ class ContractsSerializers(serializers.ModelSerializer):
 class VacancySerializers(serializers.ModelSerializer):
     contract = serializers.SerializerMethodField()
     company = serializers.SerializerMethodField()
+    companyNit = serializers.SerializerMethodField()
     class Meta:
         model = Vacancy
-        fields = ('id','company','name','description','additionalInfo','salary','modality','place','contract','experience','skills','created_at','updated_at') #('atrubute','')
+        fields = ('id','company','companyNit','name','description','additionalInfo','salary','modality','place','contract','experience','skills','created_at','updated_at') #('atrubute','')
         read_only_fields = ('created_at','id',)
 
     def get_contract(self,obj):
@@ -26,6 +27,9 @@ class VacancySerializers(serializers.ModelSerializer):
     
     def get_company(self,obj):
         return obj.idCompany.name
+    
+    def get_companyNit(self,obj):
+        return obj.idCompany.nit
 
 class RequirementsSerializers(serializers.ModelSerializer):
     class Meta:
