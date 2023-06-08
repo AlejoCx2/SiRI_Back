@@ -18,7 +18,7 @@ def generarRanking(req):
     for c in candidates:
         s = Students.objects.get(code=c.idStudent)
         obj = {}
-        obj['Similitud'] = str(c.score)+"%"
+        obj['Similitud'] = c.score
         obj['Nombre'] = s.name
         obj['Correo'] = s.mail
         obj['Telefono'] = s.phone
