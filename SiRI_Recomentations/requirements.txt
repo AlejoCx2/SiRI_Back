@@ -8,7 +8,7 @@ djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 joblib==1.2.0
 nltk==3.8.1
-numpy==1.24.3
+numpy==1.24.1
 psycopg2-binary==2.9.6
 pycparser==2.21
 pycryptodome==3.17
@@ -16,8 +16,8 @@ PyJWT==2.6.0
 python-dotenv==1.0.0
 pytz==2023.3
 regex==2023.5.5
-scikit-learn==1.2.2
-scipy==1.10.1
+scipy==1.9.3
+scikit-learn==1.1.0
 sqlparse==0.4.3
 threadpoolctl==3.1.0
 tqdm==4.65.0
