@@ -58,12 +58,15 @@ def apply(req):
     print('---- Comprobar Experiencia ----')
     verExp = verifyExperience(vacancy['experience'],student_Info['experiences'])
 
-    if verExp['std'] >= verExp['req']:
-        exp = 1
+    if verExp['req'] == "N/A":
+        score = (0.4*similitud + 0.6*skills)*100
     else:
-        exp = verExp['std']/verExp['req']
+        if verExp['std'] >= verExp['req']:
+            exp = 1
+        else:
+            exp = verExp['std']/verExp['req']
+        score = (0.4*similitud + 0.2*exp + 0.4*skills)*100
 
-    score = (0.3*similitud + 0.2*exp + 0.5*skills)*100
 
     res['result']['similitud'] = similitud
     res['result']['skills'] = skills

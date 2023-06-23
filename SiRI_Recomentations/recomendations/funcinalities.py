@@ -172,7 +172,7 @@ def loweCase(slist):
 def verifyExperience(reqExp,stdExpList):
     reqArr = reqExp.split(" ") #['cantidad' 'unidad']
     if len(reqArr) > 2:
-        req = 0
+        req = "N/A"
     else:
         if reqArr[1] == "años" or reqArr[1] == "año":
             req = int(reqArr[0])*12
