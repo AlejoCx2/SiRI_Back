@@ -1,23 +1,33 @@
-import os
 import jwt
-from rest_framework import permissions
+import os
+from rest_framework.response import Response
+from rest_framework.status import HTTP_401_UNAUTHORIZED
 
-
-class handleAuthToken(permissions.BasePermission):
-    def has_permission(self, request, view):
-        secret = "xd";
+def handleAuthToken(request):
         method = request.method
-        authToken = request.headers.get('Authorization')
-        try: 
-            authToken = authToken[7:]
-            #print("Aqui 1 XD")
-            #decodedToken = jwt.decode(authToken, os.getenv("AUTH_PUBLIC_KEY"), algorithms=["RS256"])
-            #print("Aqui 2 XD")
-            #return True
-            if authToken  == secret:
-                return True
-            else:
-                return False
-            
+        authToken = request.headers.get('Authorization') 
+        if authToken == None:
+             return  Response({'error': 'Unauthorized'}, status=HTTP_401_UNAUTHORIZED)
+        try:
+            authToken = authToken[7:]   
+            decodedToken = jwt.decode(authToken, os.getenv('AUTH_PUBLIC_KEY'), algorithms=["RS256"])
+            if method == 'POST':
+                if decodedToken['role'] == 'company':  
+                    return decodedToken['sub_key']
+                else:
+                    return "invalid token"
+            if method == 'GET':
+                
+                return decodedToken['sub_key']
+            if method == 'PUT':
+                if decodedToken['role'] == 'company':  
+                    return decodedToken['sub_key']
+                else:
+                    return "invalid token"
+            if method == 'DELETE':
+                if decodedToken['role'] == 'company':  
+                    return decodedToken['sub_key']
+                else:
+                    return "invalid token"
         except:
-            return False
+            return  "invalid token"
