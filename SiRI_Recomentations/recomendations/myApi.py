@@ -222,3 +222,33 @@ def updateVacancyVector(req):
         except Candidates.DoesNotExist:
             res['result']['candidates']= 0
             return Response(res)
+
+
+@api_view(['GET'])
+def getCandidateVacancies(req):
+    sub_key = handleAuthToken(req)
+    if sub_key == 'invalid token':
+        return  Response({"error": sub_key}, status=status.HTTP_400_BAD_REQUEST)
+    elif sub_key == 'Unauthorized':
+        return  Response({'error': 'Unauthorized'}, status=HTTP_401_UNAUTHORIZED)
+    else:
+        print("Entro")
+        res = {'status': 0, 'result': {}, 'msg': ""}
+        studentVacancies = []
+        try:
+            student = Students.objects.get(code=sub_key)
+            studentId = student.id
+            vacancies = Candidates.objects.filter(idStudent=studentId)
+            studentVacancies = []
+            for v in vacancies:
+                studentVacancies.append(v.idVacancy)
+            
+            res['status']=1
+            res['result'] = studentVacancies
+            
+        except Students.DoesNotExist:
+            print("El estudiante no esta en la DB")
+            res['status']=1
+            res['result'] = studentVacancies
+
+        return Response(studentVacancies)

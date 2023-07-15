@@ -1,7 +1,7 @@
 from rest_framework import routers
 from rest_framework.urls import path
 from .api import StudentsViewSet, CandidatesViewSet
-from .myApi import generarRanking, apply, updateStudentVector,updateVacancyVector
+from .myApi import generarRanking, apply, updateStudentVector,updateVacancyVector,getCandidateVacancies
 
 router = routers.DefaultRouter()
 
@@ -13,3 +13,4 @@ urlpatterns.append(path('api/generar_ranking/', generarRanking, name='generar_ra
 urlpatterns.append(path('api/apply/', apply, name='apply'))
 urlpatterns.append(path('api/update/student/', updateStudentVector, name='updateStudent'))
 urlpatterns.append(path('api/update/vacancy/', updateVacancyVector, name='updateVacancy'))
+urlpatterns.append(path('api/get/vacances/', getCandidateVacancies, name='getVacanciesId'))
