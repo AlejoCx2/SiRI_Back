@@ -141,5 +141,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = ["*"]
-CORS_ORIGIN_WHITELIST = ["*"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:4200", "https://fs-uv.vercel.app", "https://fsu-front.vercel.app"]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+r"^https://\w+\.ondigitalocean\.app$",
+]
+#CORS_ORIGIN_WHITELIST = ["*"]
