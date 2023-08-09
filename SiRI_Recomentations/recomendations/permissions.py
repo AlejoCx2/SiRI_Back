@@ -28,7 +28,7 @@ PwIDAQAB
             authToken = authToken[7:]
             decodedToken = jwt.decode(authToken, xd, algorithms=["RS256"])
             if method == 'POST':
-                if decodedToken['role'] == 'company':  
+                if decodedToken['role'] == 'company' or decodedToken['role'] == 'student':  
                     print("Es una compañia")
                     print(datetime.now().strftime("%H:%M:%S"))
                     return decodedToken['sub_key']
