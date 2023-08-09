@@ -15,7 +15,7 @@ def handleAuthToken(request):
             authToken = authToken[7:]   
             decodedToken = jwt.decode(authToken, os.getenv("AUTH_PUBLIC_KEY"), algorithms=["RS256"])
             if method == 'POST':
-                if decodedToken['role'] == 'company':  
+                if decodedToken['role'] == 'company' or decodedToken['role'] == 'student':  
                     return decodedToken['sub_key']
                 else:
                     return "invalid token"
